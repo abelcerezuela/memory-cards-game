@@ -1,43 +1,50 @@
-<div class="container mt-4">
-
-  @if (started){
-    <div class="mb-3">
-      <p><strong>Score:</strong> {{ score }}</p>
-      <p><strong>¿Where is number {{ targetNumber }}?</strong></p>
-    </div>
-    <div class="mb-3">
-      <div class="row">
-        @for (num of randomNumbers; track $index) {
-          <div class="col-4 p-2">
-            <button
-              class="w-100 border p-4 fs-3 fw-bold d-flex justify-content-center align-items-center position-relative"
-              [ngClass]="{
-                'bg-success text-white': selectedIndex === $index && correct,
-                'bg-danger text-white': selectedIndex === $index && !correct,
-                'bg-light': selectedIndex !== $index
-              }"
-              (click)="selectNumber($index)"
-              [disabled]="!waitingForSelection"
-            >
-              {{ showNumbers ? num : (selectedIndex === $index ? num : '') }}
-            </button>
-          </div>
-        }
+<div class="container">
+  <header class="d-flex justify-content-between align-items-center m-3">
+    <p>Player: {{ playerName }}</p>
+    <p>Historical score: {{ historicalScore }}</p>
+  </header>
+  
+  <div class="m-3">
+    @if (started){
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <p>¿Where is number {{ targetNumber }}?</p>
+        <p>Current score: {{ currentScore }}</p>
       </div>
-    </div>
-  } @else {
-    <!-- Level -->
-    <div class="mb-3">
-      <label for="level" class="form-label">Select level:</label>
-      <select id="level" class="form-select w-auto" [(ngModel)]="level">
-        <option value="easy">Easy (10s)</option>
-        <option value="medium">Medium (5s)</option>
-        <option value="hard">High (2s)</option>
-      </select>
-    </div>
-    <!-- Start button -->
-    <div>
-      <button class="btn btn-primary" (click)="startGame()">Start game</button>
-    </div>
-  }
+      <div class="mb-3">
+        <div class="row">
+          @for (num of randomNumbers; track $index) {
+            <div class="col-4 p-2">
+              <button
+                class="w-100 border p-4 fs-3 fw-bold d-flex justify-content-center align-items-center position-relative"
+                [ngClass]="{
+                  'bg-success text-white': selectedIndex === $index && correct,
+                  'bg-danger text-white': selectedIndex === $index && !correct,
+                  'bg-light': selectedIndex !== $index
+                }"
+                (click)="selectNumber($index)"
+                [disabled]="!waitingForSelection"
+              >
+                {{ showNumbers ? num : (selectedIndex === $index ? num : '?') }}
+              </button>
+            </div>
+          }
+        </div>
+      </div>
+    } @else {
+      <!-- Level -->
+      <div class="mb-3">
+        <label for="level" class="form-label">Select level:</label>
+        <select id="level" class="form-select w-auto" [(ngModel)]="level">
+          <option value="easy">Easy (10s)</option>
+          <option value="medium">Medium (5s)</option>
+          <option value="hard">High (2s)</option>
+        </select>
+      </div>
+      <!-- Start button -->
+      <div>
+        <button class="btn btn-primary" (click)="startGame()">Start game</button>
+      </div>
+    }
+  </div>
+
 </div>

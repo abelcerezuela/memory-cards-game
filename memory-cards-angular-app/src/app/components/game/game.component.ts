@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-game',
@@ -16,9 +17,22 @@ export class GameComponent {
   selectedIndex: number | null = null;
   correct: boolean = false;
   targetNumber: number = 0;
-  score: number = 0;
+  playerName: string = '';
+  historicalScore: number = 0;
+  currentScore: number = 0;
   level: 'easy' | 'medium' | 'hard' = 'easy';
 
+  constructor(private route: ActivatedRoute) {}
+
+  ngOnInit(): void {
+    this.route.paramMap.subscribe(params => {
+      this.playerName = params.get('name') || 'Guest';
+
+      // Al cargar, recuperamos puntuación previa
+      const stored = localStorage.getItem(`score_${this.playerName}`);
+      this.historicalScore = stored ? parseInt(stored, 10) : 0;
+    });
+  }
 
   startGame(): void {
     this.resetGame();
@@ -48,7 +62,7 @@ export class GameComponent {
 
     if (this.randomNumbers[num] === this.targetNumber) {
       this.correct = true;
-      this.score += this.getPointsBasedOnLevel();
+      this.updateScore(this.getPointsBasedOnLevel());
 
       // Continuar con el juego tras haber hecho click, haciendo una pausa de 1s
       setTimeout(() => this.startGame(), 1000);
@@ -56,7 +70,8 @@ export class GameComponent {
       this.correct = false;
       // Partida terminada
       setTimeout(() => {
-        alert(`Puntuación final: ${this.score}`);
+        alert(`¡Game over! Score: ${this.currentScore}, Historical score: ${this.historicalScore}`);
+        this.currentScore = 0;
         this.started = false;
       }, 1500);
     }
@@ -95,6 +110,12 @@ export class GameComponent {
       case 'hard': return 30;
       default: return 0;
     }
+  }
+
+  updateScore(points: number): void {
+    this.currentScore += points;
+    this.historicalScore += points;
+    localStorage.setItem(`score_${this.playerName}`, this.historicalScore.toString());
   }
 
   resetGame(): void {

@@ -1,5 +1,5 @@
 <h1>{{ title }}</h1>
-<input type="text" placeholder="Introduce your name">
-<button class="btn btn-primary" (click)="navigateToGame()">Go to game</button>
+<input type="text" [(ngModel)]="username" placeholder="Introduce your name" class="form-control my-2">
+<button class="btn btn-primary" [routerLink]="['/game', username]" [disabled]="!username">Go to game</button>
 
 

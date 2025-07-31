@@ -1,21 +1,15 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 
 
 @Component({
   selector: 'app-home',
-  imports: [],
+  imports: [FormsModule, RouterLink],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
 export class HomeComponent {
-
-  constructor(private router: Router) {}
-
   title = 'Memory Cards Game';
-
-  navigateToGame() {
-    this.router.navigate(['/game']);
-  }
-
+  username: string = '';
 }
