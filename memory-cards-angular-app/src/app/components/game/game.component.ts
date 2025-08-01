@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { ScoreService } from '../../services/score/score.service';
+import { PointsAndDelayService } from '../../services/points-and-delay/points-and-delay.service';
+import { GenerateNumbersService } from '../../services/generate-numbers-service/generate-numbers.service';
 
 @Component({
   selector: 'app-game',
@@ -22,34 +25,39 @@ export class GameComponent {
   currentScore: number = 0;
   level: 'easy' | 'medium' | 'hard' = 'easy';
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(
+    private generateNumbersService: GenerateNumbersService,
+    private pointsAndDelayService: PointsAndDelayService,
+    private route: ActivatedRoute, 
+    private scoreService: ScoreService,
+  
+  ) {}
 
   ngOnInit(): void {
+    // Recuperamos la puntuación histórica
     this.route.paramMap.subscribe(params => {
       this.playerName = params.get('name') || 'Guest';
-
-      // Al cargar, recuperamos puntuación previa
-      const stored = localStorage.getItem(`score_${this.playerName}`);
+      const stored = this.scoreService.getScore(this.playerName);
       this.historicalScore = stored ? parseInt(stored, 10) : 0;
     });
   }
 
   startGame(): void {
     this.resetGame();
-    this.generateRandomNumbers();
+    this.randomNumbers = this.generateNumbersService.generateRandomNumbers();
 
     this.started = true;
     this.showNumbers = true;
 
-    const delay = this.getDelayBasedOnLevel();
+    const delay = this.pointsAndDelayService.getDelayBasedOnLevel(this.level);
 
-    // Mostrar los números solo por N segundos
+    // Mostrar los números solo por N segundos (según level elegido)
     setTimeout(() => {
       this.showNumbers = false;
       this.waitingForSelection = true;
     }, delay);
 
-    // Elegir un número aleatorio a encontrar
+    // Número aleatorio a encontrar
     this.targetNumber = this.randomNumbers[Math.floor(Math.random() * 9)];
   }
 
@@ -60,15 +68,16 @@ export class GameComponent {
     this.waitingForSelection = false;
     this.selectedIndex = num;
 
+    // Número encontrado
     if (this.randomNumbers[num] === this.targetNumber) {
       this.correct = true;
-      this.updateScore(this.getPointsBasedOnLevel());
+      this.updateScore(this.pointsAndDelayService.getPointsBasedOnLevel(this.level));
 
       // Continuar con el juego tras haber hecho click, haciendo una pausa de 1s
       setTimeout(() => this.startGame(), 1000);
     } else {
+      // Número no encontrado
       this.correct = false;
-      // Partida terminada
       setTimeout(() => {
         alert(`¡Game over! Score: ${this.currentScore}, Historical score: ${this.historicalScore}`);
         this.currentScore = 0;
@@ -77,45 +86,10 @@ export class GameComponent {
     }
   }
 
-  generateRandomNumbers(): void {
-    const numbers: number[] = [];
-    for (let i = 1; i <= 9; i++) {
-      numbers.push(i);
-    }
-    this.randomNumbers = this.shuffleArray(numbers);
-  }
-
-  shuffleArray(numbers: number[]): number[] {
-    const numbersToFind = [...numbers];
-    for (let i = numbersToFind.length - 1; i > 0; i--) {
-      const randomIndex = Math.floor(Math.random() * (i + 1));
-      [numbersToFind[i], numbersToFind[randomIndex]] = [numbersToFind[randomIndex], numbersToFind[i]];
-    }
-    return numbersToFind;
-  }
-
-  getDelayBasedOnLevel(): number {
-    switch (this.level) {
-      case 'easy': return 10000;
-      case 'medium': return 5000;
-      case 'hard': return 2000;
-      default: return 5000;
-    }
-  }
-
-  getPointsBasedOnLevel(): number {
-    switch (this.level) {
-      case 'easy': return 10;
-      case 'medium': return 20;
-      case 'hard': return 30;
-      default: return 0;
-    }
-  }
-
   updateScore(points: number): void {
     this.currentScore += points;
     this.historicalScore += points;
-    localStorage.setItem(`score_${this.playerName}`, this.historicalScore.toString());
+    this.scoreService.setScore(this.playerName, this.historicalScore);
   }
 
   resetGame(): void {
