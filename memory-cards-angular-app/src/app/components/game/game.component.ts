@@ -26,11 +26,10 @@ export class GameComponent {
   level: 'easy' | 'medium' | 'hard' = 'easy';
 
   constructor(
+    private route: ActivatedRoute,
     private generateNumbersService: GenerateNumbersService,
     private pointsAndDelayService: PointsAndDelayService,
-    private route: ActivatedRoute, 
     private scoreService: ScoreService,
-  
   ) {}
 
   ngOnInit(): void {
