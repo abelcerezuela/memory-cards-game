@@ -1,7 +1,7 @@
 <section class="home" aria-labelledby="home-title">
   <header class="home__header">
-    <div class="home__title">
-      <h1>{{ title }}</h1>
+    <div>
+      <h1 class="home__title">{{ title }}</h1>
     </div>
   </header>
 
@@ -17,21 +17,21 @@
         Please enter your user name to start the game.
       </legend>
 
+
       <div class="home__form-group">
-        <label for="username" class="home__label">
-          User name <span aria-hidden="true">*</span>
-        </label>
         <input 
-          type="text" 
-          id="username" 
+          type="input" 
+          class="home__input" 
+          placeholder="User name" 
           name="username" 
+          id='username' 
           formControlName="username" 
-          placeholder="Introduce your name" 
-          class="home__input"
           aria-required="true"
           [attr.aria-invalid]="userForm.controls['username'].invalid && userForm.controls['username'].touched"
           aria-describedby="username-error"
-        >
+        />
+        <label for="username" class="home__label">User name</label>
+
         @if (userForm.controls['username'].touched) {
           <div class="home__input--alert" role="alert">
             @if (userForm.controls['username'].errors?.['required']) {
@@ -41,7 +41,7 @@
               <span>User name should be at least 4 characters long</span>
             }
           </div>
-          }
+        }
       </div>
       <button 
         class="home__button" 
