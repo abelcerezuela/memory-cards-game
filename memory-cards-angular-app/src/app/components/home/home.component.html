@@ -1,17 +1,39 @@
-<section class="home">
+<section class="home" aria-labelledby="home-title">
   <header class="home__header">
     <div class="home__title">
       <h1>{{ title }}</h1>
     </div>
   </header>
 
-  <form class="home__form" (ngSubmit)="goToGame()" [formGroup]="userForm">
+  <form 
+    class="home__form" 
+    (ngSubmit)="goToGame()" 
+    [formGroup]="userForm"
+    role="form"
+    aria-describedby="form-instructions"
+  >
     <fieldset class="home__fieldset">
+      <legend id="form-instructions" class="home__legend">
+        Please enter your user name to start the game.
+      </legend>
+
       <div class="home__form-group">
-        <label for="username" class="home__label">User name</label>
-        <input type="text" id="username" name="username" formControlName="username" placeholder="Introduce your name" class="home__input">
+        <label for="username" class="home__label">
+          User name <span aria-hidden="true">*</span>
+        </label>
+        <input 
+          type="text" 
+          id="username" 
+          name="username" 
+          formControlName="username" 
+          placeholder="Introduce your name" 
+          class="home__input"
+          aria-required="true"
+          [attr.aria-invalid]="userForm.controls['username'].invalid && userForm.controls['username'].touched"
+          aria-describedby="username-error"
+        >
         @if (userForm.controls['username'].touched) {
-          <div class="text-danger">
+          <div class="home__input--alert" role="alert">
             @if (userForm.controls['username'].errors?.['required']) {
               <span>User name is required</span>
             }
@@ -21,7 +43,14 @@
           </div>
           }
       </div>
-      <button class="home__button" type="submit" [disabled]="userForm.invalid">Go to game</button>
+      <button 
+        class="home__button" 
+        type="submit" 
+        [disabled]="userForm.invalid" 
+        [attr.aria-disabled]="userForm.invalid"
+      >
+        Go to game
+      </button>
     </fieldset>
   </form>
 </section>

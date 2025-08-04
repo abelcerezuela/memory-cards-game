@@ -1,0 +1,135 @@
+// Variables
+$color-primary: #0d6efd;
+$color-primary-hover: #0b5ed7;
+$color-success: #198754;
+$color-danger: #dc3545;
+$color-muted: #e9ecef;
+$color-light: #f8f9fa;
+$color-border: #ccc;
+$border-radius: 6px;
+$transition: 0.3s ease;
+
+@mixin button-style($bg-color, $hover-color: null) {
+  padding: 0.75rem 1.5rem;
+  background-color: $bg-color;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color $transition;
+
+  @if $hover-color {
+    &:hover {
+      background-color: $hover-color;
+    }
+  }
+}
+
+.game {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin: 1rem 0;
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 1rem;
+  }
+
+  &__player,
+  &__score {
+    margin: 0;
+    font-weight: 500;
+  }
+
+  &__body {
+    margin: 1rem;
+  }
+
+  &__status {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+  }
+
+  &__question,
+  &__current-score {
+    margin: 0;
+    font-size: 1.1rem;
+  }
+
+  &__grid {
+    margin-bottom: 1.5rem;
+  }
+
+  &__row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  &__cell {
+    flex: 1 1 calc(33.333% - 1rem);
+  }
+
+  &__number {
+    width: 100%;
+    padding: 2rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+    border: 1px solid $color-border;
+    background-color: $color-light;
+    text-align: center;
+    border-radius: $border-radius;
+    cursor: pointer;
+    transition: background-color $transition, color $transition;
+
+    &--correct {
+      background-color: $color-success;
+      color: #fff;
+    }
+
+    &--wrong {
+      background-color: $color-danger;
+      color: #fff;
+    }
+
+    &--hidden {
+      background-color: $color-muted;
+      color: #000;
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+  }
+
+  &__level {
+    margin-bottom: 1.5rem;
+  }
+
+  &__label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+  }
+
+  &__select {
+    width: auto;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+  }
+
+  &__start {
+    text-align: center;
+
+    &-button {
+      @include button-style($color-primary, $color-primary-hover);
+    }
+  }
+}

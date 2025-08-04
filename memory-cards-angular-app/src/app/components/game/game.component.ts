@@ -10,7 +10,7 @@ import { GenerateNumbersService } from '../../services/generate-numbers-service/
   selector: 'app-game',
   imports: [CommonModule, FormsModule],
   templateUrl: './game.component.html',
-  styleUrl: './game.component.css'
+  styleUrl: './game.component.scss'
 })
 export class GameComponent {
   started: boolean = false;
