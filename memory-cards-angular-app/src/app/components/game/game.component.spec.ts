@@ -12,9 +12,15 @@ describe('GameComponent', () => {
   let scoreService: jasmine.SpyObj<ScoreService>;
   let pointsAndDelayService: jasmine.SpyObj<PointsAndDelayService>;
   let generateNumbersService: jasmine.SpyObj<GenerateNumbersService>;
-  let activatedRoute: ActivatedRoute;
+  let nameParam: string | null;
 
   beforeEach(async () => {
+    nameParam = 'Abel'
+    const mockActivatedRoute = {
+      paramMap: of({
+        get: (key: string) => (key === 'name' ? nameParam : null)
+      })
+    };
     const scoreServiceSpy = jasmine.createSpyObj('ScoreService', ['getScore', 'setScore']);
     const pointsAndDelayServiceSpy = jasmine.createSpyObj('PointsAndDelayService', ['getDelayBasedOnLevel', 'getPointsBasedOnLevel']);
     const generateNumbersServiceSpy = jasmine.createSpyObj('GenerateNumbersService', ['generateRandomNumbers']);
@@ -25,17 +31,7 @@ describe('GameComponent', () => {
         { provide: ScoreService, useValue: scoreServiceSpy },
         { provide: PointsAndDelayService, useValue: pointsAndDelayServiceSpy },
         { provide: GenerateNumbersService, useValue: generateNumbersServiceSpy },
-        {
-          provide: ActivatedRoute,
-          useValue: {
-            paramMap: of({
-              get: (key: string) => {
-                if (key === 'name') return 'Abel';
-                return null;
-              }
-            })
-          }
-        }
+        { provide: ActivatedRoute, useValue: mockActivatedRoute }
       ]
     })
     .compileComponents();
@@ -43,7 +39,6 @@ describe('GameComponent', () => {
     scoreService = TestBed.inject(ScoreService) as jasmine.SpyObj<ScoreService>;
     pointsAndDelayService = TestBed.inject(PointsAndDelayService) as jasmine.SpyObj<PointsAndDelayService>;
     generateNumbersService = TestBed.inject(GenerateNumbersService) as jasmine.SpyObj<GenerateNumbersService>;
-    activatedRoute = TestBed.inject(ActivatedRoute);
 
     fixture = TestBed.createComponent(GameComponent);
     component = fixture.componentInstance;
@@ -55,12 +50,43 @@ describe('GameComponent', () => {
       expect(component).toBeTruthy();
     });
   
-    it('should retrieve player name from route params and set historical score', () => {
+    it('should asign playerName from route params and set historical score', () => {
       scoreService.getScore.and.returnValue('10');
       component.ngOnInit();
   
       expect(component.playerName).toBe('Abel');
       expect(component.historicalScore).toBe(10);
+    });
+
+    it('should assign playerName as "Guest" if name param is missing', async () => {
+      nameParam = null;
+
+      await TestBed.resetTestingModule();
+      await TestBed.configureTestingModule({
+        imports: [GameComponent],
+        providers: [
+          { provide: ScoreService, useValue: scoreService },
+          { provide: PointsAndDelayService, useValue: pointsAndDelayService },
+          { provide: GenerateNumbersService, useValue: generateNumbersService },
+          {
+            provide: ActivatedRoute,
+            useValue: {
+              paramMap: of({
+                get: (key: string) => (key === 'name' ? nameParam : null)
+              })
+            }
+          }
+        ]
+      }).compileComponents();
+
+      fixture = TestBed.createComponent(GameComponent);
+      component = fixture.componentInstance;
+      fixture.detectChanges();
+
+      scoreService.getScore.and.returnValue('0');
+      component.ngOnInit();
+
+      expect(component.playerName).toBe('Guest');
     });
   
     it('should set historicalScore to 0 if no score is found', () => {
@@ -87,6 +113,25 @@ describe('GameComponent', () => {
       expect(component.showNumbers).toBeTrue();
       expect(pointsAndDelayService.getDelayBasedOnLevel).toHaveBeenCalled();
     });
+
+    it('should hide the numbers and activate waitingForSelection after delay', fakeAsync(() => {
+      const mockDelay = 5000;
+      const mockNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+      component.level = 'medium';
+
+      generateNumbersService.generateRandomNumbers.and.returnValue(mockNumbers);
+      pointsAndDelayService.getDelayBasedOnLevel.and.returnValue(mockDelay);
+
+      component.startGame();
+
+      expect(component.showNumbers).toBeTrue();
+      expect(component.waitingForSelection).toBeFalse();
+
+      tick(mockDelay);
+
+      expect(component.showNumbers).toBeFalse();
+      expect(component.waitingForSelection).toBeTrue();
+    }));
   });
 
   describe('selectNumber', () => {
