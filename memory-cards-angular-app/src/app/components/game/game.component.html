@@ -1,25 +1,25 @@
-<div class="container">
-  <header class="d-flex justify-content-between align-items-center m-3">
-    <p>Player: {{ playerName }}</p>
-    <p>Historical score: {{ historicalScore }}</p>
+<section class="game">
+  <header class="game__header">
+    <p class="game__player">Player: {{ playerName }}</p>
+    <p class="game__score">Historical score: {{ historicalScore }}</p>
   </header>
   
-  <div class="m-3">
+  <div class="game__body">
     @if (started){
-      <div class="d-flex justify-content-between align-items-center mb-3">
-        <p>¿Where is number {{ targetNumber }}?</p>
-        <p>Current score: {{ currentScore }}</p>
+      <div class="game__status">
+        <p class="game__question">¿Where is number {{ targetNumber }}?</p>
+        <p class="game__current-score">Current score: {{ currentScore }}</p>
       </div>
-      <div class="mb-3">
-        <div class="row">
+      <div class="game__grid">
+        <div class="game__row">
           @for (num of randomNumbers; track $index) {
-            <div class="col-4 p-2">
+            <div class="game__cell">
               <button
-                class="w-100 border p-4 fs-3 fw-bold d-flex justify-content-center align-items-center position-relative"
+                class="game__number"
                 [ngClass]="{
-                  'bg-success text-white': selectedIndex === $index && correct,
-                  'bg-danger text-white': selectedIndex === $index && !correct,
-                  'bg-light': selectedIndex !== $index
+                  'game__number--correct': selectedIndex === $index && correct,
+                  'game__number--wrong': selectedIndex === $index && !correct,
+                  'game__number--hidden': selectedIndex !== $index
                 }"
                 (click)="selectNumber($index)"
                 [disabled]="!waitingForSelection"
@@ -32,19 +32,18 @@
       </div>
     } @else {
       <!-- Level -->
-      <div class="mb-3">
-        <label for="level" class="form-label">Select level:</label>
-        <select id="level" class="form-select w-auto" [(ngModel)]="level">
+      <div class="game__level">
+        <label for="level" class="game__label">Select level:</label>
+        <select id="level" class="game__select" [(ngModel)]="level">
           <option value="easy">Easy (10s)</option>
           <option value="medium">Medium (5s)</option>
           <option value="hard">High (2s)</option>
         </select>
       </div>
       <!-- Start button -->
-      <div>
-        <button class="btn btn-primary" (click)="startGame()">Start game</button>
+      <div class="game__start">
+        <button class="game__start-button" (click)="startGame()">Start game</button>
       </div>
     }
   </div>
-
-</div>
+</section>

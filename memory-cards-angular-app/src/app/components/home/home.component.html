@@ -1,19 +1,27 @@
-<section class="container d-flex flex-column justify-content-between align-items-center my-3">
-  <header class="row w-100 mb-5">
-    <div class="col-12 text-center">
+<section class="home">
+  <header class="home__header">
+    <div class="home__title">
       <h1>{{ title }}</h1>
     </div>
   </header>
 
-  <form class="md-form row w-100">
-    <fieldset class="col-12 col-md-6 mx-auto">
-      
-      <div class="mb-4">
-        <label for="username" class="form-label">User name</label>
-        <input type="text" id="username" name="username" [(ngModel)]="username" placeholder="Introduce your name" class="form-control">
+  <form class="home__form" (ngSubmit)="goToGame()" [formGroup]="userForm">
+    <fieldset class="home__fieldset">
+      <div class="home__form-group">
+        <label for="username" class="home__label">User name</label>
+        <input type="text" id="username" name="username" formControlName="username" placeholder="Introduce your name" class="home__input">
+        @if (userForm.controls['username'].touched) {
+          <div class="text-danger">
+            @if (userForm.controls['username'].errors?.['required']) {
+              <span>User name is required</span>
+            }
+            @if (userForm.controls['username'].errors?.['minlength']) {
+              <span>User name should be at least 4 characters long</span>
+            }
+          </div>
+          }
       </div>
-
-      <button class="btn btn-primary w-100" [routerLink]="['/game', username]" [disabled]="!username">Go to game</button>
+      <button class="home__button" type="submit" [disabled]="userForm.invalid">Go to game</button>
     </fieldset>
   </form>
 </section>

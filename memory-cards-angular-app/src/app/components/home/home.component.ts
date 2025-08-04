@@ -1,15 +1,24 @@
 import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 
 @Component({
   selector: 'app-home',
-  imports: [FormsModule, RouterLink],
+  imports: [FormsModule, ReactiveFormsModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
 export class HomeComponent {
   title = 'Memory Cards Game';
-  username: string = '';
+  userForm: FormGroup = new FormGroup({
+    username: new FormControl("", [Validators.required,Validators.minLength(4)])
+  });
+
+  constructor(private router: Router) {}
+
+  goToGame() {
+    const username = this.userForm.get('username')?.value;   
+    this.router.navigateByUrl(`/game/${username}`);
+  }
 }
