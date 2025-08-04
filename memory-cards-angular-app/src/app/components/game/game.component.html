@@ -1,20 +1,24 @@
-<section class="game">
+<section class="game" aria-labelledby="game-heading">
   <header class="game__header">
     <p class="game__player">Player: {{ playerName }}</p>
     <p class="game__score">Historical score: {{ historicalScore }}</p>
   </header>
   
   <div class="game__body">
-    @if (started){
-      <div class="game__status">
-        <p class="game__question">¿Where is number {{ targetNumber }}?</p>
+    @if (started) {
+      <div class="game__status" aria-live="polite" aria-atomic="true">
+        <p class="game__question" id="target-question">
+          Where is number <strong>{{ targetNumber }}</strong>?
+        </p>
         <p class="game__current-score">Current score: {{ currentScore }}</p>
       </div>
-      <div class="game__grid">
+
+      <div class="game__grid" role="group" aria-labelledby="target-question">
         <div class="game__row">
           @for (num of randomNumbers; track $index) {
             <div class="game__cell">
               <button
+                type="button"
                 class="game__number"
                 [ngClass]="{
                   'game__number--correct': selectedIndex === $index && correct,
@@ -23,6 +27,7 @@
                 }"
                 (click)="selectNumber($index)"
                 [disabled]="!waitingForSelection"
+                [attr.aria-pressed]="selectedIndex === $index"
               >
                 {{ showNumbers ? num : (selectedIndex === $index ? num : '?') }}
               </button>
@@ -31,18 +36,32 @@
         </div>
       </div>
     } @else {
-      <!-- Level -->
       <div class="game__level">
         <label for="level" class="game__label">Select level:</label>
-        <select id="level" class="game__select" [(ngModel)]="level">
-          <option value="easy">Easy (10s)</option>
-          <option value="medium">Medium (5s)</option>
-          <option value="hard">High (2s)</option>
+        <select
+          id="level"
+          class="game__select"
+          [(ngModel)]="level"
+          aria-describedby="level-description"
+        >
+          <option value="easy">Easy (10 seconds)</option>
+          <option value="medium">Medium (5 seconds)</option>
+          <option value="hard">Hard (2 seconds)</option>
         </select>
+        <p id="level-description" class="visually-hidden">
+          The level affects how long the numbers are shown before they are hidden.
+        </p>
       </div>
-      <!-- Start button -->
+
       <div class="game__start">
-        <button class="game__start-button" (click)="startGame()">Start game</button>
+        <button
+          type="button"
+          class="game__start-button"
+          (click)="startGame()"
+          aria-describedby="level-description"
+        >
+          Start game
+        </button>
       </div>
     }
   </div>

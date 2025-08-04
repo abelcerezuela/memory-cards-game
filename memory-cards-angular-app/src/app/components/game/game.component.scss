@@ -1,3 +1,5 @@
+@use '../../../styles/mixins.scss' as mixins;
+
 // Variables
 $color-primary: #0d6efd;
 $color-primary-hover: #0b5ed7;
@@ -111,6 +113,10 @@ $transition: 0.3s ease;
 
   &__level {
     margin-bottom: 1.5rem;
+  }
+
+  &__level-description {
+    @include mixins.visually-hidden;
   }
 
   &__label {
