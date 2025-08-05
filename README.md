@@ -4,7 +4,7 @@ Mobile application inspired on the "Memory Cards" game.
 **Memory Cards** is a memory-based game where the player must remember the positions of numbers from 1 to 9 displayed briefly on a grid of 9 squares. After the numbers disappear, the player is asked to find a specific number's position. If they guess correctly, they earn points and continue playing. If they guess wrong, the game ends.
 
 ## Link to app
-`https://abelcerezuela.github.io/memory-cards-game/`
+[Memory cards game](https://abelcerezuela.github.io/memory-cards-game/)
 
 ## App structure
 The app is a **Progressive Web App (PWA)** with two main views:
@@ -30,5 +30,5 @@ The app is a **Progressive Web App (PWA)** with two main views:
   - If correct: green highlight, score increases, new round starts.
   - If incorrect: red highlight, number revealed, game ends.
 
-
-For more information about building and running this angular app, read the README.md file located in the memory-cards-angular-app folder.
+## Building and running this angular app
+For more information about building and running this angular app, read the [README.md file](https://github.com/abelcerezuela/memory-cards-game/blob/main/memory-cards-angular-app/README.md) located in the memory-cards-angular-app folder.
