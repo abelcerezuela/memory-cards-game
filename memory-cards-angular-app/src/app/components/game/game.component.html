@@ -7,9 +7,15 @@
   <div class="game__body">
     @if (started) {
       <div class="game__status" aria-live="polite" aria-atomic="true">
-        <h2 class="game__question" id="target-question">
-          Where is number <strong>{{ targetNumber }}</strong>?
-        </h2>
+        @if (!showNumbers) {
+          <h2 class="game__question" id="target-question">
+            Where is number <strong>{{ targetNumber }}</strong>?
+          </h2>
+        } @else {
+          <h2 class="game__question" id="target-question">
+            Memorize de cards
+          </h2>
+        }
         <p class="game__current-score">Current score: {{ currentScore }}</p>
       </div>
 
