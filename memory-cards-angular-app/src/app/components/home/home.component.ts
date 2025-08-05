@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ButtonComponent } from '../shared/button/button.component';
 
 
 @Component({
   selector: 'app-home',
-  imports: [FormsModule, ReactiveFormsModule],
+  imports: [ButtonComponent, FormsModule, ReactiveFormsModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })

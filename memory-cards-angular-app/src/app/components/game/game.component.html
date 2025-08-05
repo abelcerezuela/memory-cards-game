@@ -24,20 +24,20 @@
         <div class="game__row">
           @for (num of randomNumbers; track $index) {
             <div class="game__cell">
-              <button
+              <app-button
                 type="button"
-                class="game__number"
-                [ngClass]="{
-                  'game__number--correct': selectedIndex === $index && correct,
-                  'game__number--wrong': selectedIndex === $index && !correct,
-                  'game__number--hidden': selectedIndex !== $index
-                }"
-                (click)="selectNumber($index)"
+                [extraClasses]="'card-number-button'"
                 [disabled]="!waitingForSelection"
-                [attr.aria-pressed]="selectedIndex === $index"
+                [aria-pressed]="selectedIndex === $index"
+                [ngClassConfig]="{
+                  'card-number-button__number--correct': selectedIndex === $index && correct,
+                  'card-number-button__number--wrong':   selectedIndex === $index && !correct,
+                  'card-number-button__number--hidden':  selectedIndex !== $index
+                }"
+                (clicked)="selectNumber($index)"
               >
                 {{ showNumbers ? num : (selectedIndex === $index ? num : '?') }}
-              </button>
+              </app-button>
             </div>
           }
         </div>
@@ -61,14 +61,14 @@
       </div>
 
       <div class="game__start">
-        <button
+        <app-button
           type="button"
-          class="primary-button"
-          (click)="startGame()"
+          [extraClasses]="'primary-button'"
           aria-describedby="level-description"
+          (clicked)="startGame()"
         >
           Start game
-        </button>
+        </app-button>
       </div>
     }
   </div>

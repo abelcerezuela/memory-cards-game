@@ -5,10 +5,11 @@ import { ActivatedRoute } from '@angular/router';
 import { ScoreService } from '../../services/score/score.service';
 import { PointsAndDelayService } from '../../services/points-and-delay/points-and-delay.service';
 import { GenerateNumbersService } from '../../services/generate-numbers-service/generate-numbers.service';
+import { ButtonComponent } from '../shared/button/button.component';
 
 @Component({
   selector: 'app-game',
-  imports: [CommonModule, FormsModule],
+  imports: [ButtonComponent, CommonModule, FormsModule],
   templateUrl: './game.component.html',
   styleUrl: './game.component.scss'
 })
@@ -146,7 +147,7 @@ export class GameComponent {
         alert(`¡Game over! Score: ${this.currentScore}, Historical score: ${this.historicalScore}`);
         this.currentScore = 0;
         this.started = false;
-      }, 1500);
+      }, 1000);
     }
   }
 

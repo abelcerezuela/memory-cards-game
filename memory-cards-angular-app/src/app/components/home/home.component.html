@@ -43,14 +43,13 @@
           </div>
         }
       </div>
-      <button 
-        class="primary-button" 
-        type="submit" 
-        [disabled]="userForm.invalid" 
-        [attr.aria-disabled]="userForm.invalid"
+      <app-button
+        type="submit"
+        [disabled]="userForm.invalid"
+        extraClasses="primary-button"
       >
         Go to game
-      </button>
+      </app-button>
     </fieldset>
   </form>
 </section>

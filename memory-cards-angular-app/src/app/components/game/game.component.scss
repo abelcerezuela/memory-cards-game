@@ -56,39 +56,6 @@
     flex: 1 1 calc(33.333% - 1rem);
   }
 
-  &__number {
-    width: 100%;
-    padding: 2rem;
-    font-size: 1.5rem;
-    font-weight: bold;
-    border: 0.1rem solid $color-border;
-    background-color: $color-light;
-    text-align: center;
-    border-radius: $border-radius;
-    cursor: pointer;
-    transition: background-color $transition, color $transition;
-
-    &--correct {
-      background-color: $color-success;
-      color: #fff;
-    }
-
-    &--wrong {
-      background-color: $color-danger;
-      color: #fff;
-    }
-
-    &--hidden {
-      background-color: $color-secondary;
-      color: #000;
-    }
-
-    &:disabled {
-      cursor: not-allowed;
-      opacity: 0.6;
-    }
-  }
-
   &__level {
     margin-bottom: 1.5rem;
   }

@@ -1,0 +1,68 @@
+@use '../../../../styles/variables.scss' as *;
+
+:host {
+  display: block;
+  width: 100%;
+}
+
+button {
+  width: 100%;
+  padding: 0.75rem 1.25rem;
+  font-size: 1rem;
+  border: none;
+  cursor: pointer;
+}
+
+.primary-button {
+  width: 100%;
+  margin-top: 4rem;
+  padding: 0.75rem;
+  color: $white;
+  background-color: $color-primary;
+  border: none;
+  border-radius: $border-radius;
+  font-weight: bold;
+  font-size: 1rem;
+  letter-spacing: 0.03rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s, box-shadow 0.2s;
+
+  &:disabled {
+    width: 100%;
+    background-color: $color-disabled;
+    cursor: not-allowed;
+  }
+}
+
+.card-number-button {
+  width: 100%;
+  padding: 2rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  border: 0.1rem solid $color-border;
+  background-color: $color-secondary;
+  text-align: center;
+  border-radius: $border-radius;
+  cursor: pointer;
+  transition: background-color $transition, color $transition;
+
+  &__number--correct {
+    background-color: $color-success;
+    color: $black;
+  }
+
+  &__number--wrong {
+    background-color: $color-danger;
+    color: $black;
+  }
+
+  &__number--hidden{
+    background-color: $color-secondary;
+    color: $black;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    color: $black;
+  }
+}
