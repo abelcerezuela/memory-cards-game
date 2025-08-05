@@ -11,12 +11,13 @@
           <h2 class="game__question" id="target-question">
             Where is number <strong>{{ targetNumber }}</strong>?
           </h2>
+          <p class="game__current-score">Current score: {{ currentScore }}</p>
         } @else {
           <h2 class="game__question" id="target-question">
             Memorize de cards
           </h2>
+          <p>Time left: {{this.countdown}}s</p>
         }
-        <p class="game__current-score">Current score: {{ currentScore }}</p>
       </div>
 
       <div class="game__grid" role="group" aria-labelledby="target-question">

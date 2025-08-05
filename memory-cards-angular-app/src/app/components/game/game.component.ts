@@ -17,6 +17,7 @@ export class GameComponent {
   randomNumbers: number[] = [];
   showNumbers: boolean = false;
   waitingForSelection: boolean = false;
+  countdown: number = 0;
   selectedIndex: number | null = null;
   correct: boolean = false;
   targetNumber: number = 0;
@@ -49,6 +50,15 @@ export class GameComponent {
     this.showNumbers = true;
 
     const delay = this.pointsAndDelayService.getDelayBasedOnLevel(this.level);
+
+    // Mostrar un contador de N segundos (según level elegido)
+    this.countdown = delay/1000;
+    let intervalId = setInterval(() => {
+      this.countdown--;
+      if (this.countdown <= 0) {
+        clearInterval(intervalId);
+      }
+    }, 1000);
 
     // Mostrar los números solo por N segundos (según level elegido)
     setTimeout(() => {
