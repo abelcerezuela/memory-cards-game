@@ -7,9 +7,9 @@
   <div class="game__body">
     @if (started) {
       <div class="game__status" aria-live="polite" aria-atomic="true">
-        <p class="game__question" id="target-question">
+        <h2 class="game__question" id="target-question">
           Where is number <strong>{{ targetNumber }}</strong>?
-        </p>
+        </h2>
         <p class="game__current-score">Current score: {{ currentScore }}</p>
       </div>
 
@@ -56,7 +56,7 @@
       <div class="game__start">
         <button
           type="button"
-          class="game__start-button"
+          class="primary-button"
           (click)="startGame()"
           aria-describedby="level-description"
         >
