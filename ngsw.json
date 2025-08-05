@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1754390152795,
+  "timestamp": 1754411945156,
   "index": "/memory-cards-game/index.html",
   "assetGroups": [
     {
@@ -13,10 +13,10 @@
       "urls": [
         "/memory-cards-game/favicon.ico",
         "/memory-cards-game/index.html",
-        "/memory-cards-game/main-XW65QAMS.js",
+        "/memory-cards-game/main-H6U3DAKL.js",
         "/memory-cards-game/manifest.webmanifest",
         "/memory-cards-game/polyfills-B6TNHZQ6.js",
-        "/memory-cards-game/styles-RTZC5S65.css"
+        "/memory-cards-game/styles-4MNTHHNL.css"
       ],
       "patterns": []
     },
@@ -51,11 +51,11 @@
     "/memory-cards-game/icons/icon-512x512.png": "1de182f76f7329dfa8f9fcdd1fdcdd695bea6a99",
     "/memory-cards-game/icons/icon-72x72.png": "aa88a6096bd973be7f6d7a5489bfa6bc2463f8c4",
     "/memory-cards-game/icons/icon-96x96.png": "7fb8f59c30ce2ff12c700321a0b39e14b3dc8f95",
-    "/memory-cards-game/index.html": "63445de189e4eff0abaca2f53c579ce7bc830c4c",
-    "/memory-cards-game/main-XW65QAMS.js": "16bdbb9be239e85ef9d395a59e162c555c68c085",
+    "/memory-cards-game/index.html": "17d98f8cb13d09720508aace4be42a4176f1b9fc",
+    "/memory-cards-game/main-H6U3DAKL.js": "3afde803f481360a97f8ddb2ddd34d111b94464a",
     "/memory-cards-game/manifest.webmanifest": "181e7debdcebdbe57ef4c47f61d6face611853be",
     "/memory-cards-game/polyfills-B6TNHZQ6.js": "bf76ac291d7f51c1139b7edcf86b359a30c08c64",
-    "/memory-cards-game/styles-RTZC5S65.css": "5b3fcdacdf474341da369c67658c956e5d726140"
+    "/memory-cards-game/styles-4MNTHHNL.css": "ace210814e79356bf1f36200e62461e5ebb1f16b"
   },
   "navigationUrls": [
     {
