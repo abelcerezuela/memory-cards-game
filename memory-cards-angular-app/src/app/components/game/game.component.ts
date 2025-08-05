@@ -13,17 +13,65 @@ import { GenerateNumbersService } from '../../services/generate-numbers-service/
   styleUrl: './game.component.scss'
 })
 export class GameComponent {
+  /**
+   * Indicates whether the game has started.
+   * @type {boolean}
+   */
   started: boolean = false;
+  /**
+   * Array of randomly generated numbers from 1 to 9.
+   * @type {number[]}
+   */
   randomNumbers: number[] = [];
+  /**
+   * Flag to control visibility of numbers on the grid.
+   * @type {boolean}
+   */
   showNumbers: boolean = false;
+  /**
+   * Flag to indicate if the game is waiting for the player's selection.
+   * @type {boolean}
+   */
   waitingForSelection: boolean = false;
+  /**
+   * Countdown timer in seconds for number visibility.
+   * @type {number}
+   */
   countdown: number = 0;
+  /**
+   * Index of the selected number by the player.
+   * @type {number | null}
+   */
   selectedIndex: number | null = null;
+  /**
+   * Flag to indicate if the player's selection was correct.
+   * @type {boolean}
+   */
   correct: boolean = false;
+  /**
+   * Target number the player must find.
+   * @type {number}
+   */
   targetNumber: number = 0;
+  /**
+   * Name of the player retrieved from the route.
+   * @type {string}
+   */
   playerName: string = '';
+  /**
+   * Historical score of the player stored across sessions.
+   * @type {number}
+   */
   historicalScore: number = 0;
+  /**
+   * Current score of the ongoing game session.
+   * @type {number}
+   */
   currentScore: number = 0;
+  /**
+   * Selected difficulty level of the game.
+   * @type {'easy' | 'medium' | 'hard'}
+   */
   level: 'easy' | 'medium' | 'hard' = 'easy';
 
   constructor(
@@ -33,8 +81,10 @@ export class GameComponent {
     private scoreService: ScoreService,
   ) {}
 
+  /**
+   * Retrieves the player's name from the route and loads their historical score.
+   */
   ngOnInit(): void {
-    // Recuperamos la puntuación histórica
     this.route.paramMap.subscribe(params => {
       this.playerName = params.get('name') || 'Guest';
       const stored = this.scoreService.getScore(this.playerName);
@@ -42,6 +92,11 @@ export class GameComponent {
     });
   }
 
+  /**
+   * Starts a new game round by resetting the state, generating numbers,
+   * showing them for a limited time, and selecting a target number.
+   * @returns {void}
+   */
   startGame(): void {
     this.resetGame();
     this.randomNumbers = this.generateNumbersService.generateRandomNumbers();
@@ -50,8 +105,6 @@ export class GameComponent {
     this.showNumbers = true;
 
     const delay = this.pointsAndDelayService.getDelayBasedOnLevel(this.level);
-
-    // Mostrar un contador de N segundos (según level elegido)
     this.countdown = delay/1000;
     let intervalId = setInterval(() => {
       this.countdown--;
@@ -60,32 +113,34 @@ export class GameComponent {
       }
     }, 1000);
 
-    // Mostrar los números solo por N segundos (según level elegido)
     setTimeout(() => {
       this.showNumbers = false;
       this.waitingForSelection = true;
     }, delay);
 
-    // Número aleatorio a encontrar
     this.targetNumber = this.randomNumbers[Math.floor(Math.random() * 9)];
   }
 
-  // Click en un número
+  /**
+   * Handles the player's selection of a number.
+   * Checks if the selected number matches the target and updates the score or ends the game.
+   * @param {number} num - Index of the selected number.
+   * @returns {void}
+   */
+
   selectNumber(num: number): void {
     if (!this.waitingForSelection) return;
 
     this.waitingForSelection = false;
     this.selectedIndex = num;
 
-    // Número encontrado
     if (this.randomNumbers[num] === this.targetNumber) {
       this.correct = true;
       this.updateScore(this.pointsAndDelayService.getPointsBasedOnLevel(this.level));
 
-      // Continuar con el juego tras haber hecho click, haciendo una pausa de 1s
+      // Continue the game after a short pause
       setTimeout(() => this.startGame(), 1000);
     } else {
-      // Número no encontrado
       this.correct = false;
       setTimeout(() => {
         alert(`¡Game over! Score: ${this.currentScore}, Historical score: ${this.historicalScore}`);
@@ -95,12 +150,21 @@ export class GameComponent {
     }
   }
 
+  /**
+   * Updates the current and historical scores and saves them using the score service.
+   * @param {number} points - Points to add based on difficulty level.
+   * @returns {void}
+   */
   updateScore(points: number): void {
     this.currentScore += points;
     this.historicalScore += points;
     this.scoreService.setScore(this.playerName, this.historicalScore);
   }
 
+  /**
+   * Resets the game state before starting a new round.
+   * @returns {void}
+   */
   resetGame(): void {
     this.showNumbers = false;
     this.waitingForSelection = false;
